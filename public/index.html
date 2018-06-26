@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interesting People</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  <script src="index.js" defer></script>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div id="vue-app">
+
+
+    <router-view></router-view>
+
+  </div>
+</body>
+</html>
+
+<template id="home-page">
+  <div class="vue-component">
+
+    <h1>Interesting People</h1>
+
+    <div>
+      <h3>Add a person</h3>
+
+      <ul>
+        <li v-for="error in errors">{{ error }}</li>
+      </ul>
+
+      Name: <input v-model="newPersonName">
+      Bio: <input v-model="newPersonBio">
+      <button v-on:click="addPerson()">Add</button>
+    </div>
+
+    <div>
+      Search Name <input v-model="nameFilter" list="names">
+      <datalist id="names">
+        <option v-for="person in people">{{ person.name }}</option>
+      </datalist>
+    </div>
+    <div>
+      Search Bio <input v-model="bioFilter">
+    </div>
+
+    <div>
+      <button v-on:click="setAttribute('name')">Sort by Name</button>
+      <button v-on:click="setAttribute('bio')">Sort by Bio</button>
+    </div>
+
+    <div>
+      <transition-group name="slide-right">
+        <div v-for="person in sortedPeople" v-if="isValidPerson(person)" v-bind:key="person.id">
+          <h2 v-on:click="toggleBio(person)">{{ person.name }}</h2>
+          <h3 v-if="person.bioVisible">{{ person.bio }} <button v-on:click="deletePerson(person)">Delete</button></h3>
+        </div>
+      </transition-group>
+    </div>
+
+    <h4>Number of People: {{ people.length }}</h4>
+
+  </div>
+</template>
